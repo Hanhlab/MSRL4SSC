@@ -78,7 +78,8 @@ We sincerely thank the authors of the following works for their valuable contrib
 	volume = {36},
 	year = {2023}
 }
--@inproceedings{Wang2023multi,
+
+- @inproceedings{Wang2023multi,
 	title={Multi-modal learning with missing modality via shared-specific feature modelling},
 	author={Wang, Hu and Chen, Yuanhong and Ma, Congbo and Avery, Jodie and Hull, Louise and Carneiro, Gustavo},
 	booktitle={2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
