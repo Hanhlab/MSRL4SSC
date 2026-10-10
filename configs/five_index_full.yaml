@@ -1,0 +1,235 @@
+data:
+  source_index: data/example_dataset/sample_index.csv
+  source_npz_root: data/example_dataset
+  join_key: Sample_ID
+  target_column: SSC
+  fold_seeds:
+  - 62
+  - 72
+  - 82
+  image_size: 128
+  resize_to_image_size: false
+  stats_pixels_per_patch: 4096
+  image_winsor_quantiles:
+  - 0.005
+  - 0.995
+  image_clip_z: 8.0
+  band_names:
+  - Blue
+  - Green
+  - Red
+  - RE
+  - NIR
+  - SWIR1
+  - SWIR2
+  - SI3
+  - S_2
+  - S_5
+  - kNDMI
+  - TCARI
+  - DEM
+  - Soil_Clay
+  - Soil_Sand
+  - Pb_030
+  - VV
+  - VH
+  s2_bands: &id001
+  - SI3
+  - SI5
+  - SI8
+  - kNDMI
+  - TCARI
+  s1_bands:
+  - VV
+  - VH
+  s2_intensity_augment_bands: *id001
+cache:
+  enabled: true
+  path: cache/msrl_ssl_5indexs2_2s1_float32.h5
+  compression: lzf
+cv:
+  folds:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  outer_test_folds:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+croma_initialization:
+  enabled: true
+  required: true
+  path: checkpoints/CROMA_base.pt
+  s2_source_channel_indices:
+  - 2
+  - 2
+  - 1
+  - 7
+  - 4
+  s1_source_channel_indices:
+  - 0
+  - 1
+  extra_s1_channel_init: zero
+  s2_source_channel_groups:
+  - - 2
+    - 3
+  - - 1
+    - 2
+    - 3
+  - - 1
+    - 3
+  - - 7
+    - 10
+  - - 4
+    - 3
+    - 2
+msrl_backbone:
+  patch_size: 16
+  encoder_dim: 768
+  optical_depth: 12
+  radar_depth: 6
+  joint_depth: 6
+  heads: 16
+  ffn_ratio: 4.0
+  dropout: 0.05
+  decoder_dim: 384
+  decoder_depth: 2
+  decoder_heads: 8
+  projection_dim: 256
+  contrastive_temperature: 0.1
+  contrastive_queue_size: 192
+pretraining:
+  global_once: true
+  global_seed: 72
+  scope: all_unlabeled
+  validation_fraction: 0.1
+  epochs: 120
+  batch_size: 1
+  num_workers: 0
+  gradient_accumulation: 8
+  lr: 0.0001
+  finetune_mode: last_blocks
+  last_n_blocks: 1
+  backbone_lr: 1.0e-05
+  head_lr: 0.0001
+  min_lr: 1.0e-06
+  weight_decay: 0.05
+  s2_mask_ratio: 0.65
+  s1_mask_ratio: 0.65
+  loss_weights:
+    contrastive: 1.0
+    mae_s2: 1.0
+    mae_s1: 1.0
+    alignment: 0.05
+  amp: true
+  grad_clip: 1.0
+  patience: 30
+  min_delta: 0.0001
+  validation_mask_seed: 10072
+msrl_model:
+  common_dim: 64
+  private_dim: 32
+  state_dim: 128
+  attention_heads: 4
+  coordinate_frequencies: 4
+  dropout: 0.3
+  finetune_mode: last_blocks
+  last_n_blocks: 1
+msrl_training:
+  training_mode: global_once
+  train_variants:
+  - mapping
+  validation_fraction: 0.2
+  validation_strategy: target_stratified
+  validation_stratification_bins: 5
+  epochs: 40
+  batch_size: 2
+  num_workers: 0
+  gradient_accumulation: 2
+  backbone_lr: 3.0e-06
+  head_lr: 0.001
+  weight_decay: 0.001
+  supervision_mode: all_paths
+  modality_probabilities:
+    both: 0.5
+    s2: 0.25
+    s1: 0.25
+  selection_path: both
+  nll_weight: 0.01
+  nll_warmup_epochs: 5
+  nll_ramp_epochs: 15
+  rank_weight: 0.0
+  rank_min_gap: 0.2
+  amp: true
+  grad_clip: 1.0
+  minimum_epochs: 40
+  patience: 30
+  min_delta: 0.0001
+  plateau_factor: 0.5
+  plateau_patience: 5
+  min_lr: 1.0e-06
+msrl_losses:
+  supervised_both: 1.5
+  supervised_s2: 0.35
+  supervised_s1: 0.35
+  common_gap_alignment: 0.02
+  common_token_alignment: 0.01
+  s2_s1_prediction_consistency: 0.01
+  s2_s1_state_consistency: 0.005
+  both_to_single_prediction_distillation: 0.0
+  both_to_single_state_distillation: 0.0
+  shared_private_orthogonal: 0.0
+feature_extraction:
+  batch_size: 4
+  num_workers: 0
+  amp: true
+regression:
+  report_global_end_to_end: false
+  feature_sets:
+  - Both_RawPlusFoldMsrlImagePCA
+  models:
+  - Huber
+  - Ridge
+  - CatBoost
+  - PLSR
+  - KNN
+  - ElasticNet
+  - ExtraTrees
+  - GradientBoosting
+  - RandomForest
+  - ANN
+  feature_models: {}
+  tune: false
+  search_n_jobs: 1
+  image_feature_pca_components:
+  - 4
+  image_feature_pca_default: 4
+msrl_5fold:
+  enabled: true
+  fold_seed: 74
+  folds:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  trained_source_folds:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
+  reuse_source_fold:
+    3: 3
+  fixed_epochs: 40
+  batch_size: 2
+  gradient_accumulation: 2
+  save_head_only: true
+output:
+  root: outputs
+  msrl_pipeline: msrl_pipeline
+_project_root: .
