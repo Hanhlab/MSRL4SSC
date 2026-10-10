@@ -1,38 +1,33 @@
-# MSRL4SSC: A multi-source satellite image representation learning framework for soil salt content retrieval:
+# MSRL4SSC: A Multi-Source Satellite Image Representation Learning Framework for Soil Salt Content Retrieval
 
-1. cross-modal self-supervised learning from S2 and S1 patches;
-2. image-only modality-optional task adaptation;
-3. PCA(4) plus ten-regressor SSC evaluation.
+This repository provides the implementation of **MSRL4SSC**, a multi-source satellite representation learning framework for soil salt content (SSC) retrieval. The framework integrates cross-modal self-supervised pretraining, modality-optional task adaptation, and regression-based SSC retrieval using Sentinel-1 (S1) and Sentinel-2 (S2) imagery.
 
-## Required external inputs
-
-- a user-provided sample index and its referenced patch files;
-- an official CROMA checkpoint;
-- conventional predictors required only by Stage 3.
-
-The example paths in `configs/five_index_full.yaml` are placeholders. The S2 channel order is `SI3, S_2, S_3, kNDMI, TCARI`; S1 uses `VV, VH`.
-
-## Environment
+## Requirements
 
 ```bash
 conda activate torch_suc
 pip install -r requirements.txt
 ```
 
-## Stage 1 and Stage 2
+## Training
+
+### Stage 1: Cross-Modal Self-Supervised Pretraining
+
+### Stage 2: Modality-Optional Task Adaptation
+
+Run both stages using:
 
 ```bash
 python train.py \
-  --data-root /path/to/example_dataset \
+  --data-root /path/to/dataset \
   --pretrained-checkpoint /path/to/CROMA_base.pt \
   --base-config configs/five_index_full.yaml \
-  --output-root outputs \
-  --resume
+  --output-root outputs
 ```
 
-Stage 1 initializes the MSRL backbone from official CROMA weights and reconstructs masked S1 and S2 patches with normalized MSE. Stage 2 fine-tunes the final transformer block. 
+## Stage 3: SSC Retrieval
 
-## Stage 3
+The learned point representations are reduced using principal component analysis (PCA) and combined with conventional predictors for SSC retrieval using ten regression models.
 
 ```bash
 python evaluate_stage3.py \
@@ -41,15 +36,54 @@ python evaluate_stage3.py \
   --output-dir outputs/stage3
 ```
 
-For every outer fold, PCA is fitted only to the 128-dimensional image state of the four training folds. Four PCs are concatenated with the Stage-3 conventional predictors and evaluated using Huber, Ridge, CatBoost, PLSR, KNN, ElasticNet, ExtraTrees, GradientBoosting, RandomForest, and ANN.
+## Acknowledgements
 
-## Files
+We are deeply grateful for the work of these researchers.
+@inproceedings{Fuller2023CROMA,
+	author = {Fuller, Anthony and Millard, Koreen and Green, James},
+	booktitle = {Advances in Neural Information Processing Systems},
+	doi = {10.52202/075280-0241},
+	editor = {A. Oh and T. Naumann and A. Globerson and K. Saenko and M. Hardt and S. Levine},
+	pages = {5506--5538},
+	publisher = {Curran Associates, Inc},
+	title = {{CROMA}: Remote Sensing Representations with Contrastive Radar-Optical Masked Autoencoders},
+	url = {https://proceedings.neurips.cc/paper_files/paper/2023/file/11822e84689e631615199db3b75cd0e4-Paper-Conference.pdf},
+	volume = {36},
+	year = {2023}
+}
 
-- `train.py`: spatial five-fold Stage-1/2 orchestration.
-- `evaluate_stage3.py`: Stage-3 PCA and ten-regressor evaluation.
-- `scripts/`: Stage-1 and Stage-2 training entry points.
-- `msrl4ssc/`: model, loss, data interface, checkpoint adaptation, and regressors.
-- `configs/five_index_full.yaml`: schematic experiment configuration.
+@inproceedings{Wang2023multi,
+	title={Multi-modal learning with missing modality via shared-specific feature modelling},
+	author={Wang, Hu and Chen, Yuanhong and Ma, Congbo and Avery, Jodie and Hull, Louise and Carneiro, Gustavo},
+	booktitle={2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+	pages={15878--15887},
+	year={2023},
+	organization={IEEE},
+	doi = {10.1109/CVPR52729.2023.01524}
+}
 
-The historical accuracy from an earlier implementation cannot be assigned to this image-only Stage-2 version without retraining.
+## Acknowledgements
 
+We sincerely thank the authors of the following works for their valuable contributions and publicly available research resources, which have inspired and supported the development of MSRL4SSC.
+
+- @inproceedings{Fuller2023CROMA,
+	author = {Fuller, Anthony and Millard, Koreen and Green, James},
+	booktitle = {Advances in Neural Information Processing Systems},
+	doi = {10.52202/075280-0241},
+	editor = {A. Oh and T. Naumann and A. Globerson and K. Saenko and M. Hardt and S. Levine},
+	pages = {5506--5538},
+	publisher = {Curran Associates, Inc},
+	title = {{CROMA}: Remote Sensing Representations with Contrastive Radar-Optical Masked Autoencoders},
+	url = {https://proceedings.neurips.cc/paper_files/paper/2023/file/11822e84689e631615199db3b75cd0e4-Paper-Conference.pdf},
+	volume = {36},
+	year = {2023}
+}
+-@inproceedings{Wang2023multi,
+	title={Multi-modal learning with missing modality via shared-specific feature modelling},
+	author={Wang, Hu and Chen, Yuanhong and Ma, Congbo and Avery, Jodie and Hull, Louise and Carneiro, Gustavo},
+	booktitle={2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+	pages={15878--15887},
+	year={2023},
+	organization={IEEE},
+	doi = {10.1109/CVPR52729.2023.01524}
+}
