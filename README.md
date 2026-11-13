@@ -12,8 +12,8 @@ Soil salt content (SSC) provides a valuable basis for agricultural land manageme
 MSRL4SSC/
 ├── assets/
 │   ├── Framework.png
-│   ├── MSRL4SSC_modality_results.png     
-│   └── MSRL4SSC_mapping_results.png      
+│   ├── Classifiedmapping2022.tif   
+│   └── Classifiedmapping2023.tif   
 ├── data/
 │   ├── input_patches/   
 │   ├── large_raster/                 
