@@ -34,8 +34,6 @@ conda activate msrl4ssc
 pip install -r requirements.txt
 ```
 
-PyTorch may be installed separately to match the local CUDA version.
-
 ## Input data
 The publicly available data sources used in this study include Sentinel-1 Ground Range Detected (GRD) and Sentinel-2 Level-2A (L2A) imagery, NASADEM elevation data, OpenLandMap soil clay content, sand content, and bulk density at a depth of 30 cm, and ESA WorldCover land-cover data. These data were accessed and processed through Google Earth Engine (GEE; \url{https://code.earthengine.google.com/}). Sentinel-2 imagery was acquired on June 10, 2022, and June 5, 2023, whereas Sentinel-1 imagery was acquired on June 2, 2023.
 
