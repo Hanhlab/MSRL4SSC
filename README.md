@@ -12,16 +12,16 @@ Soil salt content (SSC) provides a valuable basis for agricultural land manageme
 MSRL4SSC/
 ├── assets/
 │   ├── Framework.png
-│   ├── MSRL4SSC_modality_results.png   
-│   └── MSRL4SSC_mapping_results.png   
+│   ├── MSRL4SSC_modality_results.png       # add before public release
+│   └── MSRL4SSC_mapping_results.png        # add before public release
 ├── data/
 │   ├── input_patches/   
-│   ├── large_raster/               
+│   ├── large_raster/                     # default multi-bands inference inputs
 │   └── samples/  
 ├── pretrained/                             
 ├── model.py                                
-├── train.py                            
-├── predict_large_raster.py        
+├── train.py                                # training and evaluation
+├── predict_large_raster.py                 # GeoTIFF mapping
 ├── requirements.txt
 └── README.md
 ```
@@ -106,11 +106,11 @@ On the 2023 Hetao Irrigation District dataset, the manuscript reports:
 | Sentinel-1 and Sentinel-2 | 0.6917 |
 
 <p align="center">
-  <img src="assets/Classifiedmapping2022.tif" width="88%" alt="SSC classification on June 10, 2022">
+  <img src="assets/Classifiedmapping2022.png" width="88%" alt="SSC classification on June 10, 2022">
 </p>
 
 <p align="center">
-  <img src="assets/Classifiedmapping2023.tif" width="88%" alt="SSC classification on June 5, 2023">
+  <img src="assets/Classifiedmapping2023.png" width="88%" alt="SSC classification on June 5, 2023">
 </p>
 
 ## Acknowledgements

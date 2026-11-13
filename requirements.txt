@@ -1,8 +1,7 @@
 numpy
 pandas
-PyYAML
 scikit-learn
 catboost
+joblib
+rasterio
 torch
-h5py
-
