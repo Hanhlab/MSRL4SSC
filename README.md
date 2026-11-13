@@ -12,16 +12,16 @@ Soil salt content (SSC) provides a valuable basis for agricultural land manageme
 MSRL4SSC/
 ├── assets/
 │   ├── Framework.png
-│   ├── MSRL4SSC_modality_results.png       # add before public release
-│   └── MSRL4SSC_mapping_results.png        # add before public release
+│   ├── MSRL4SSC_modality_results.png     
+│   └── MSRL4SSC_mapping_results.png      
 ├── data/
 │   ├── input_patches/   
-│   ├── large_raster/                     # default multi-bands inference inputs
+│   ├── large_raster/                 
 │   └── samples/  
 ├── pretrained/                             
 ├── model.py                                
-├── train.py                                # training and evaluation
-├── predict_large_raster.py                 # GeoTIFF mapping
+├── train.py                             
+├── predict_large_raster.py                
 ├── requirements.txt
 └── README.md
 ```
