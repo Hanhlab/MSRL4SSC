@@ -106,11 +106,11 @@ On the 2023 Hetao Irrigation District dataset, the manuscript reports:
 | Sentinel-1 and Sentinel-2 | 0.6917 |
 
 <p align="center">
-  <img src="assets/Classifiedmapping2022.png" width="88%" alt="SSC classification on June 10, 2022">
+  <img src="assets/Classifiedmapping2022.tif" width="88%" alt="SSC classification on June 10, 2022">
 </p>
 
 <p align="center">
-  <img src="assets/Classifiedmapping2023.png" width="88%" alt="SSC classification on June 5, 2023">
+  <img src="assets/Classifiedmapping2023.tif" width="88%" alt="SSC classification on June 5, 2023">
 </p>
 
 ## Acknowledgements
